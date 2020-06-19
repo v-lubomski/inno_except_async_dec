@@ -1,18 +1,37 @@
+"""Исключения для первого задания."""
+
+
 class InputParameterVerificationError(Exception):
-    def __init__(self, input_param, message="Верификация входных данных не пройдена"):
+    """Ошибка верификации входного параметра верифицируемой функции."""
+
+    def __init__(self, param: dict, message: str = "Верификация входных данных не пройдена.") -> None:
+        """Принимает верифицируемый параметр и, при необходимости, кастомное уведомление."""
         super().__init__()
-        self.input_parameter = input_param
+        self.param = param
         self.message = message
 
-    def __str__(self):
-        return f'{self.message}\nПолученные данные:\n{self.input_parameter}'
+    def __str__(self) -> str:
+        """Выводит уведомление и поступившие в параметре данные."""
+        return f'{self.message}\nНекорректные данные:\n{self.param}\n'
 
 
 class ResultVerificationError(Exception):
-    def __init__(self, output_param, message="Верификация результата выполнения функции не пройдена"):
+    """Ошибка верификации результата выполнения верифицируемой функции."""
+
+    def __init__(self, result: str, message: str = "Верификация результата выполнения функции не пройдена.") -> None:
+        """Принимает результат и, при необходимости, кастомное уведомление."""
         super().__init__()
-        self.output_parameter = output_param
+        self.result = result
         self.message = message
 
-    def __str__(self):
-        return f'{self.message}\nПолученные данные:\n{self.output_parameter}'
+    def __str__(self) -> str:
+        """Выводит уведомление и поступившие в параметре данные."""
+        return f'{self.message}\nНекорректный результат:\n{self.result}\n'
+
+
+class NullRepeatError(Exception):
+    """Ошибка, если параметр количества повторений был установлен равным нулю."""
+
+    def __str__(self) -> str:
+        """Выводит сообщение об ошибке."""
+        return 'Нельзя устанавливать нулевое количество повторений'
