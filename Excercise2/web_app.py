@@ -8,13 +8,9 @@ with open('schema.json', encoding='utf-8') as file:
     SCHEMA = load(file)
 
 
-async def create_connection():
-    return await aiosqlite.connect('deliveries.sqlite')
-
-
 async def init_app():
     app = web.Application()
-    app["engine"] = await create_connection()
+    app["engine"] = await aiosqlite.connect('deliveries.sqlite')
     await create_db(app["engine"])
     app.add_routes(routes)
     return app

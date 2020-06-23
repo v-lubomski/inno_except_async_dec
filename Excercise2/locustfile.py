@@ -1,6 +1,7 @@
 from locust import HttpUser, task, between
 from random import randint, choice
 import json
+import rstr
 
 
 class UserBehavior(HttpUser):
@@ -8,13 +9,12 @@ class UserBehavior(HttpUser):
 
     @task(1)
     def writing(self):
-        statuses = ["Processing", "Executing", "Delivered"]
-        # data = {randint(0, 10000): choice(statuses)}
-        data = json.dumps({str(randint(0, 10000)): choice(statuses)})
-        self.client.post("/write", data=data)
+        statuses = ["обрабатывается", "выполняется", "доставлено"]
+        data = {"identifier": rstr.xeger(r'^[a-z0-9]{2,5}$'), "status": choice(statuses)}
+        json_data = json.dumps(data, ensure_ascii=False)
+        self.client.post("/write", json_data.encode('utf-8'))
 
-    @task(10)
+    @task(5)
     def reading(self):
         self.client.get("/read")
-
 
