@@ -1,0 +1,30 @@
+{
+    "type": "object",
+    "examples": [
+        {
+            "identifier": "sdf6sd",
+            "status": "выполняется"
+        }
+    ],
+    "required": [
+        "identifier",
+        "dimensions"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "identifier": {
+            "type": "string",
+            "pattern": "",
+            "examples": [
+                "sdf6sd"
+            ]
+        },
+        "status": {
+            "type": "string",
+            "title": "The dimensions schema",
+            "examples": [
+                "выполняется"
+            ]
+        }
+    }
+}

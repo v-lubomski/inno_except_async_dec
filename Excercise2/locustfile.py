@@ -4,7 +4,7 @@ import json
 
 
 class UserBehavior(HttpUser):
-    wait_time = between(2, 5)
+    wait_time = between(1, 10)
 
     @task(1)
     def writing(self):
@@ -13,7 +13,7 @@ class UserBehavior(HttpUser):
         data = json.dumps({str(randint(0, 10000)): choice(statuses)})
         self.client.post("/write", data=data)
 
-    @task(1)
+    @task(10)
     def reading(self):
         self.client.get("/read")
 
