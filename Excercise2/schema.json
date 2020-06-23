@@ -8,20 +8,20 @@
     ],
     "required": [
         "identifier",
-        "dimensions"
+        "status"
     ],
     "additionalProperties": false,
     "properties": {
         "identifier": {
             "type": "string",
-            "pattern": "",
+            "pattern": "^[a-z0-9]{2,5}$",
             "examples": [
                 "sdf6sd"
             ]
         },
         "status": {
             "type": "string",
-            "title": "The dimensions schema",
+            "enum": ["обрабатывается", "выполняется", "доставлено"],
             "examples": [
                 "выполняется"
             ]

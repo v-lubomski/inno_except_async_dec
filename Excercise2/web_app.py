@@ -1,10 +1,11 @@
 from aiohttp import web
 import aiosqlite
 import asyncio
-from jsonschema import validate
-from exceptions.exceptions_for_exc2 import ValidationError
+from json import load
+from jsonschema import validate, ValidationError
 
-SCHEMA = ''
+with open('schema.json', encoding='utf-8') as file:
+    SCHEMA = load(file)
 
 
 async def create_connection():
@@ -35,10 +36,10 @@ async def read_from_db(db):
     return output
 
 
-async def write_to_db(db, identifier, status):
+async def write_to_db(db, json_data):
     await db.execute(
         'INSERT OR REPLACE INTO statuses(identifier, status) VALUES (?,?)',
-        (identifier, status))
+        (json_data['identifier'], json_data["status"]))
     await db.commit()
 
 
@@ -55,11 +56,10 @@ async def get_request(request):
     body = await request.json()
     try:
         validate(schema=SCHEMA, instance=body)
-    except ValidationError:
-        raise ValidationError
+    except ValidationError as ex:
+        return web.Response(text=f"Валидация не пройдена\n\n{ex}", status=400)
     else:
-        for identifier, status in body.items():
-            await asyncio.shield(write_to_db(request.app['engine'], identifier, status))
+        await asyncio.shield(write_to_db(request.app['engine'], body))
         return web.Response(text='Data successfully written')
 
 
